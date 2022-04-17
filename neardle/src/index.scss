@@ -1,0 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#app {
+    @apply font-sans text-center text-gray-800 mt-16 antialiased;
+}
