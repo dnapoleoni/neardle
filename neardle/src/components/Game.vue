@@ -1,17 +1,17 @@
 <script setup>
   import { storeToRefs } from 'pinia'
-  import { useDummyData } from '../stores/dummy'
+  import { useGameStore } from '../stores/game-store'
 
   // props
-  const { foo, fetching } = storeToRefs(useDummyData())
+  const { answer, isFetching } = storeToRefs(useGameStore())
   
   // methods
-  const { fetchLocalData } = useDummyData()
+  const { fetchWordList } = useGameStore()
 
   // create
-  fetchLocalData();
+  fetchWordList();
 </script>
 
 <template>
-  <p>{{ foo }}</p>
+  <p>{{ answer }}</p>
 </template>

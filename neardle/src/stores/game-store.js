@@ -1,17 +1,18 @@
 import { defineStore } from 'pinia'
 
-export const useDummyData = defineStore({
-    id: 'dummy',
+export const useGameStore = defineStore({
+    id: 'game',
     state: () => {
         return {
-            foo: String,
+            list: String,
             fetching: false
         }
     },
 
     getters: {
-        localData(state) {
-            return state.foo;
+
+        answer(state) {
+            return state.list[Math.round(Math.random() * state.list.length)];
         },
 
         isFetching(state) {
@@ -20,14 +21,14 @@ export const useDummyData = defineStore({
     },
 
     actions: {
-        async fetchLocalData() {
+        async fetchWordList() {
             this.fetching = true;
-            const response = await fetch('/dummy-local.json');
+            const response = await fetch('/list.txt');
             try {
-                const result = await response.json();
-                this.foo = result.data;
+                const result = await response.text();
+                this.list = result.split("\n");
             } catch (err) {
-                this.foo = null;
+                this.list = null;
                 console.error('Error loading local storage:', err);
                 return err;
             }
