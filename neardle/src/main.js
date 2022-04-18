@@ -9,6 +9,7 @@ const store = createPinia()
 watch(
     store.state, 
     (state) => {
+        console.log('state change: ', state.game.board)
         localStorage.setItem('deep-state', JSON.stringify(state))
     },
     { deep: true }
