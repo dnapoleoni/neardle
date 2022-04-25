@@ -2,39 +2,54 @@
   import { watch, ref } from 'vue' 
   import { storeToRefs } from 'pinia'
   import { useGameStore } from '../stores/game-store'
+  import { GameLogic }  from '../logic/game-logic'
 
-  // props
-  const gameStore = useGameStore();
-  const { getAnswer, getBoard, isFetched } = storeToRefs(gameStore);
-  
-  // methods
-  const { fetchGameData, guessWord } = useGameStore();
+  // objects
+  const store = useGameStore();
+  const logic = new GameLogic();
 
-  // create
-  fetchGameData();
+  //
+  logic.fetchWordList().then(() => {
 
-  const onGuess = (e) => {
-    if (gameStore.guess.length == 5) {
-      guessWord(gameStore.guess);
-      gameStore.guess = "";
-      console.log(isValid(gameStore.guess));
+    // update store
+    store.$patch((state) => {
+      state.answer = logic.todaysWord;
+      state.board = logic.gameBoard;
+      state.fetched = logic.fetched;
+      state.new = logic.newGame;
+    })
+  })
+
+  const onGuessClick = (e) => {
+
+    // first, check length
+    if (logic.isValidLength(store.guess)) {
+
+      // check if valid word
+      if (logic.isValidWord(store.guess)) {
+
+        // guess it
+        logic.guessWord(store.guess);
+        store.guess = "";
+      } else{
+        // ERROR
+        console.log("invalid word")
+      }
+    } else {
+      // ERROR
+      console.log("word length incorrect")
     }
-  }
-
-  const isValid = (word) => {
-    console.log(word, gameStore.answer)
-    return word == gameStore.answer;
   }
 </script>
 
 <template>
-  <div v-if="isFetched">
-    <p>{{ getAnswer }}</p>
-    <ul :v-if="getBoard.length > 0">
-      <li v-for="(item, index) in getBoard" :key="index">[  {{ item }}  ]</li>
+  <div v-if="store.fetched">
+    <p>{{ store.answer }}</p>
+    <ul :v-if="store.board.length > 0">
+      <li v-for="(item, index) in store.board" :key="index">[  {{ item }}  ]</li>
     </ul>
-    <form @submit.prevent="onGuess(guess)">
-      <input v-model="gameStore.guess" class="bg-gray-200 rounded m-4 p-2 text-gray-700 uppercase" maxlength="5">
+    <form @submit.prevent="onGuessClick(store.guess)">
+      <input v-model="store.guess" class="bg-gray-200 rounded m-4 p-2 text-gray-700" maxlength="5">
       <button>Click me</button>
     </form>
   </div>
