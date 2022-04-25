@@ -33,10 +33,10 @@ import { computed } from 'vue'
     let l = hsl_var(percent, start.l, end.l);
 
     // calculate colour & opacity
-    let str = 'background-color:hsla('+h+','+s+'%,'+l+'%,'+percent+');';
+    let str = 'background-color:hsla('+h+','+s+'%,'+l+'%,'+(percent+0.25)+');';
 
     // add border if correct
-    if (percent == 1) str += "border: 2px solid #333333;" 
+    if (percent == 1) str += "border: 3px solid #333333;" 
     return str
   }
 </script>
