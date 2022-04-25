@@ -1,4 +1,5 @@
-import { storeToRefs } from "pinia";
+import { useGameStore } from '../stores/game-store'
+// const store = useGameStore();
 
 export class GameLogic {
 
@@ -11,6 +12,8 @@ export class GameLogic {
     MODE_TOTAL = "total_mode";
     MODE_SPLIT = "split_mode";
 
+    store = useGameStore();
+
     // new GameLogic
 	constructor() {
 
@@ -19,7 +22,19 @@ export class GameLogic {
         this.gameBoard = [];
         this.newGame = true;
         this.fetched = false;
+        
+        // store setting
+        this.store.mode = this.gameBoard = this.ls("mode") || this.MODE_SPLIT;
 	}
+
+    toggleMode() {
+        this.store.mode = this.store.mode == this.MODE_SPLIT 
+        ? this.MODE_TOTAL 
+        : this.MODE_SPLIT;
+
+        // save it
+        this.ls("mode", this.store.mode);
+    }
 
     // min-max check
     isValidLength(guess) {
@@ -47,6 +62,7 @@ export class GameLogic {
         }
     }
 
+    // calculate letter disctance based on mode
     getDistance(guess, mode) {
 
         // map letters and compare to answer
@@ -64,6 +80,28 @@ export class GameLogic {
                 return distances;
         }
     }
+
+    // check guess length & validity, save it
+    submitGuess() {
+
+        // first, check length
+        if (this.isValidLength(this.store.guess)) {
+    
+          // check if valid word
+          if (this.isValidWord(this.store.guess)) {
+    
+            // guess it
+            this.guessWord(this.store.guess);
+            this.store.guess = "";
+          } else{
+            // ERROR
+            console.log("invalid word")
+          }
+        } else {
+          // ERROR
+          console.log("word length incorrect")
+        }
+      }
 
     // initial data fetch
     async fetchWordList() {
@@ -114,7 +152,14 @@ export class GameLogic {
                 throw new Error("Couldn't load valid word list");
             }).then(() => {
                 this.fetched = true;
-                return Promise.resolve();
+                
+                // update store
+                this.store.$patch((state) => {
+                    state.answer = this.todaysWord;
+                    state.board = this.gameBoard;
+                    state.fetched = this.fetched;
+                    state.new = this.newGame;
+                })
             })
         })
     }

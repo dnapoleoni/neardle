@@ -8,7 +8,8 @@ export const useGameStore = defineStore({
             guess: "",
             board: [],
             new: true,
-            fetched: null
+            fetched: null,
+            mode: String
         }
     }
 })
