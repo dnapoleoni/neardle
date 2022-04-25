@@ -5,10 +5,12 @@ import './index.scss'
 
 const store = createPinia()
 
-// force guess uppercase to match lists
+// store mutations
 watch(
     store.state, 
     (state, newState) => {
+        
+        // force guesses uppercase
         state.game.guess = newState.game.guess.toUpperCase();
     },{deep: true}
 )

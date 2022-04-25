@@ -6,9 +6,14 @@ export class GameLogic {
     #validWords = [];
     #minLetters = 5;
     #maxLetters = 5;
+    #START_DATE = "24 Apr 2022 14:43";
+    
+    MODE_TOTAL = "total_mode";
+    MODE_SPLIT = "split_mode";
 
     // new GameLogic
 	constructor() {
+
 		//
         this.todaysWord = "";
         this.gameBoard = [];
@@ -42,6 +47,24 @@ export class GameLogic {
         }
     }
 
+    getDistance(guess, mode) {
+
+        // map letters and compare to answer
+        const distances = guess.split("").map((letter, index) => {
+            const letterCode = letter.charCodeAt();
+            const answerCode = this.todaysWord[index].charCodeAt();
+            return Math.abs(letterCode - answerCode);
+        })
+        
+        // return array depending on mode
+        switch (mode) {
+            case this.MODE_TOTAL:
+                return distances.reduce((a, b) => a + b, 0);
+            case this.MODE_SPLIT: 
+                return distances;
+        }
+    }
+
     // initial data fetch
     async fetchWordList() {
 
@@ -54,7 +77,7 @@ export class GameLogic {
             const list = answers.split("\n");
 
             // calculate date, return corresponding answer
-            const timeDiff = new Date().getTime() - new Date("25 Apr 2022 21:57").getTime();
+            const timeDiff = new Date().getTime() - new Date(this.#START_DATE).getTime();
             const answerIndex = Math.floor(Math.abs(timeDiff / (1000 * 3600 * 24))) % list.length;
 
             // get today's word

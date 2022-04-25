@@ -44,13 +44,14 @@
 
 <template>
   <div v-if="store.fetched">
-    <p>{{ store.answer }}</p>
-    <ul :v-if="store.board.length > 0">
-      <li v-for="(item, index) in store.board" :key="index">[  {{ item }}  ]</li>
-    </ul>
+    <!-- <p>{{ store.answer }}</p> -->
     <form @submit.prevent="onGuessClick(store.guess)">
       <input v-model="store.guess" class="bg-gray-200 rounded m-4 p-2 text-gray-700" maxlength="5">
       <button>Click me</button>
     </form>
+    <ul :v-if="store.board.length > 0">
+      <li v-for="(item, index) in store.board" :key="index">[  {{ item }}  ] ({{ logic.getDistance(item, logic.MODE_TOTAL) }})</li>
+    </ul>
+    
   </div>
 </template>
