@@ -21,14 +21,13 @@
 
 <template>
   <div v-if="store.fetched">
-    <!-- <p>{{ store.answer }}</p> -->
-    <button class="px-2 absolute right-0 top-0" @click.prevent="logic.toggleMode()">{{ store.mode }}</button>
+    <!-- <button class="px-2 absolute right-0 top-0" @click.prevent="logic.toggleMode()">{{ store.mode }}</button> -->
     <form @submit.prevent="logic.submitGuess(store.guess)">
       <input v-model="store.guess" class="bg-gray-200 rounded m-4 p-2 text-gray-700" maxlength="5">
       <button>Click me</button>
     </form>
 
-    <Board />
+    <Board :board="store.board"/>
     
   </div>
 </template>

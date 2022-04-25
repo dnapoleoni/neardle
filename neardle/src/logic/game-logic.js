@@ -64,7 +64,7 @@ export class GameLogic {
     }
 
     // calculate letter disctance based on mode
-    getDistance(guess, mode) {
+    getDistance(guess) {
 
       // map letters and compare to answer
       const distances = guess.split("").map((letter, index) => {
@@ -74,7 +74,7 @@ export class GameLogic {
       })
       
       // return array depending on mode
-      switch (mode) {
+      switch (this.store.mode) {
         case this.MODE_TOTAL:
           return distances.reduce((a, b) => a + b, 0);
         case this.MODE_SPLIT: 
