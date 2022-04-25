@@ -1,6 +1,12 @@
 <script setup>
+
+  // logic
+  import { storeToRefs } from 'pinia'
   import { useGameStore } from '../stores/game-store'
   import { GameLogic }  from '../logic/game-logic'
+
+  // components
+  import Board from '../components/Board.vue'
 
   // objects
   const store = useGameStore();
@@ -21,9 +27,8 @@
       <input v-model="store.guess" class="bg-gray-200 rounded m-4 p-2 text-gray-700" maxlength="5">
       <button>Click me</button>
     </form>
-    <ul :v-if="store.board.length > 0">
-      <li v-for="(item, index) in store.board" :key="index">[  {{ item }}  ] ({{ logic.getDistance(item, store.mode) }})</li>
-    </ul>
+
+    <Board />
     
   </div>
 </template>
