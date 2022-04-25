@@ -17,7 +17,13 @@
     if (gameStore.guess.length == 5) {
       guessWord(gameStore.guess);
       gameStore.guess = "";
+      console.log(isValid(gameStore.guess));
     }
+  }
+
+  const isValid = (word) => {
+    console.log(word, gameStore.answer)
+    return word == gameStore.answer;
   }
 </script>
 
