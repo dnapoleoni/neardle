@@ -18,6 +18,25 @@ export const useGameStore = defineStore({
     // this took me hhhhooooouuuuuurrrrrsss goddammit
     updateBoard(arr) {
       this.board = [... arr];
+    },
+
+    // calculate distance between letters of full word
+    distance(word) {
+
+      // map letters and compare to answer
+      const distances = word.split("").map((letter, index) => {
+        const letterCode = letter.charCodeAt();
+        const answerCode = this.answer[index].charCodeAt();
+        return Math.abs(letterCode - answerCode);
+      })
+        
+      // return array or total depending on mode
+      switch (this.mode) {
+        case "total":
+          return distances.reduce((a, b) => a + b, 0);
+        case "split": 
+          return distances;
+      }
     }
   }
 })

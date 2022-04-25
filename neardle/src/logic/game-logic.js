@@ -6,10 +6,8 @@ export class GameLogic {
   #validWords = [];
   #minLetters = 5;
   #maxLetters = 5;
-  #START_DATE = "24 Apr 2022 14:43";
-  
-  MODE_TOTAL = "total_mode";
-  MODE_SPLIT = "split_mode";
+  // #START_DATE = "24 Apr " + Math.round(Math.random() * 2100); // random word
+  #START_DATE = "27 Apr 2022";
 
   store = useGameStore();
 
@@ -23,13 +21,13 @@ export class GameLogic {
     this.fetched = false;
     
     // store setting
-    this.store.mode = this.ls("mode") || this.MODE_SPLIT;
+    this.store.mode = this.ls("mode") || "split";
 	}
 
     toggleMode() {
-      this.store.mode = this.store.mode == this.MODE_SPLIT 
-      ? this.MODE_TOTAL 
-      : this.MODE_SPLIT;
+      this.store.mode = this.store.mode == "split" 
+      ? "total" 
+      : "split";
 
       // save it
       this.ls("mode", this.store.mode);
@@ -60,25 +58,6 @@ export class GameLogic {
       if (guess == this.todaysWord) {
         // success!
         console.log("WINNNER")
-      }
-    }
-
-    // calculate letter disctance based on mode
-    getDistance(guess) {
-
-      // map letters and compare to answer
-      const distances = guess.split("").map((letter, index) => {
-        const letterCode = letter.charCodeAt();
-        const answerCode = this.todaysWord[index].charCodeAt();
-        return Math.abs(letterCode - answerCode);
-      })
-      
-      // return array depending on mode
-      switch (this.store.mode) {
-        case this.MODE_TOTAL:
-          return distances.reduce((a, b) => a + b, 0);
-        case this.MODE_SPLIT: 
-          return distances;
       }
     }
 
@@ -155,6 +134,7 @@ export class GameLogic {
           throw new Error("Couldn't load valid word list");
         }).then(() => {
           this.fetched = true;
+          console.log('done inner')
           
           // update store
           this.store.$patch((state) => {
