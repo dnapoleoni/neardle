@@ -2,8 +2,8 @@
   import { computed } from 'vue'
   
   // components
-  import Row from '../components/Row.vue'
-  import Letter from '../components/Letter.vue'
+  import Row from './Row.vue'
+  import Letter from './Letter.vue'
   
   const props = defineProps({
     board:Array,

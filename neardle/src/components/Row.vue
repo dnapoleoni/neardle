@@ -4,7 +4,7 @@
   import { useGameStore } from '../stores/game-store'
 
   // components
-  import Letter from '../components/Letter.vue'
+  import Letter from './Letter.vue'
   
   const store = useGameStore();
   const props = defineProps({
