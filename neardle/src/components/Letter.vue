@@ -27,18 +27,21 @@ import { computed } from 'vue'
   // build style string by property
   const hsl_col_perc = (percent, start, end) => {
 
+    // save percent for offsetting
+    const pc = percent;
+
     // same calc for each value
-    let h = hsl_var(percent, start.h, end.h);
-    let s = hsl_var(percent, start.s, end.s);
-    let l = hsl_var(percent, start.l, end.l);
+    let h = hsl_var(pc, start.h, end.h);
+    let s = hsl_var(pc, start.s, end.s);
+    let l = hsl_var(pc, start.l, end.l);
 
     // calculate colour & opacity
     let col = 'hsla('+h+','+s+'%,'+l+'%,1)';
     let str = 'background-color:' + col + ';border: 4px solid '
 
     // add border if correct
-    str += (percent == 1) ? "black;" : "hsla(0,0%,0%,0);";
-    if (percent == 1) str += " font-weight:bold;";
+    str += (pc == 1) ? "black;" : "hsla(0,0%,0%,0);";
+    if (pc == 1) str += " font-weight:bold;";
     return str
   }
 

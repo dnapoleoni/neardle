@@ -1,7 +1,7 @@
 <script setup>
 
   // logic
-  import { onMounted} from 'vue';
+  import { ref, onMounted } from 'vue';
   import { useGameStore } from '../stores/game-store'
   import { GameLogic }  from '../logic/game-logic'
 
@@ -14,13 +14,33 @@
   // objects
   const store = useGameStore();
   const logic = new GameLogic();
+  const input = ref(null)
 
   // get data
   onMounted(() => {
     logic.fetchWordList().then(() => {
       console.log('READY');
+
+      input.value.focus();
     })
+
+    return input
   })
+
+  const onKeyboardClick = (value) => {
+
+    if (value == "<") {
+
+      store.guess = store.guess.slice(0, -1); 
+
+    } else if (value == ">") {
+      
+      logic.submitGuess(store.guess);
+    } else {
+      
+      if (store.guess.length < 5) store.guess += value;
+    }
+  }
 </script>
 
 <template>
@@ -29,17 +49,17 @@
     <!-- deprecated mode toggle -->
     <!-- <button class="px-2 absolute right-0 top-0" @click.prevent="logic.toggleMode()">{{ store.mode }}</button> -->
 
-    <!-- temp input -->
-    <!-- <form @submit.prevent="logic.submitGuess(store.guess)">
-      <input v-model="store.guess" class="bg-gray-200 rounded m-4 p-2 text-gray-700" maxlength="5">
-      <button class="border-2 px-2 py-1 rounded border-gray-800">Guess</button>
-    </form>  -->
-
     <!-- top menu -->
     <div class="px-10 py-4 text-2xl font-fancy font-bold">
       Neardle
     </div>
-    
+
+    <!-- temp input -->
+    <form @submit.prevent="logic.submitGuess(store.guess)" class="hidden md:block">
+      <input ref="input" v-model="store.guess" class="bg-gray-200 rounded m-2 mb-4 p-2 text-gray-700" maxlength="5">
+      <button class="border-2 px-2 py-1 rounded border-gray-800">Guess</button>
+    </form>
+
     <!-- output -->
     <div >
       <!-- game board -->
@@ -51,7 +71,7 @@
     
     <!-- input -->
     <div >
-      <Keyboard class="fixed m-auto left-0 right-0 bottom-0 md:bottom-8 p-2 bg-slate-100 w-screen"/>
+      <Keyboard @input="onKeyboardClick" class="fixed m-auto left-0 right-0 bottom-0 md:bottom-2 p-2 bg-slate-100 w-screen"/>
     </div>
   </div>
 </template>

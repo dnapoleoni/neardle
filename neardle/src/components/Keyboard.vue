@@ -10,9 +10,6 @@ import { PlusIcon } from '@heroicons/vue/outline'
 
   //
   const inputs = ["QWERTYUIOP", "ASDFGHJKL", ">ZXCVBNM<"];
-  const onKeyClick = (e) => {
-    console.log(e)
-  }
 
 </script>
 
@@ -20,7 +17,7 @@ import { PlusIcon } from '@heroicons/vue/outline'
   <div class="max-w-xl">
     <div v-for="(item, index) in inputs" :key="index">
       <div class="inline-block box-border w-[10%] px-1 cursor-pointer" v-for="(sub, subindex) in item.split('')" :key="subindex">
-        <div @click="onKeyClick(sub)" class="text-slate-500 font-bold">
+        <div @click="$emit('input', sub)" class="text-slate-500 font-bold">
           <div v-if="sub == '<'">
           <BackspaceIcon class="h-6 w-6 translate-x-4 translate-y-[6px]"/>
           </div>
