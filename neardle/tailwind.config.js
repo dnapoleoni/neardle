@@ -6,7 +6,8 @@ module.exports = {
   theme: {
     extend: {},
     fontFamily: {
-      'sans': ['Avenir', 'Helvetica', 'Arial', 'sans-serif']
+      'sans': ['Avenir', 'Helvetica', 'Arial', 'sans-serif'],
+      'fancy': ['Niramit', 'Helvetica', 'Arial', 'sans-serif']
     }
   },
   plugins: [

@@ -7,8 +7,8 @@ import { computed } from 'vue'
   })
 
   const colourRange = {
-    start: { h: 370, s: 75, l: 50 }, // red
-    end: { h: 470, s: 59, l: 50 } // green
+    start: { h: 10, s: 100, l: 50 }, // red
+    end: { h: 109, s: 60, l: 50 } // green
   }
 
   // s: +50 for colourblind mode
@@ -38,6 +38,7 @@ import { computed } from 'vue'
 
     // add border if correct
     str += (percent == 1) ? "black;" : "hsla(0,0%,0%,0);";
+    if (percent == 1) str += " font-weight:bold;";
     return str
   }
 
