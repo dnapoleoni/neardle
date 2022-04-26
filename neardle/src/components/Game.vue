@@ -14,7 +14,7 @@
   // objects
   const store = useGameStore();
   const logic = new GameLogic();
-  const input = ref(null)
+  const input = ref(null);
 
   // get data
   onMounted(() => {
@@ -46,6 +46,11 @@
 <template>
   <div v-if="store.fetched" class="relative h-screen">
 
+    <div v-if="store.solved" class="absolute h-screen w-screen flex justify-center text-9xl bg-slate-100">
+      <span v-if="store.winner">WINNER!</span>
+      <span v-else>LOSER!</span>
+    </div>
+
     <!-- deprecated mode toggle -->
     <!-- <button class="px-2 absolute right-0 top-0" @click.prevent="logic.toggleMode()">{{ store.mode }}</button> -->
 
@@ -56,8 +61,8 @@
 
     <!-- temp input -->
     <form @submit.prevent="logic.submitGuess(store.guess)" class="hidden md:block">
-      <input ref="input" v-model="store.guess" class="bg-gray-200 rounded m-2 mb-4 p-2 text-gray-700" maxlength="5">
-      <button class="border-2 px-2 py-1 rounded border-gray-800">Guess</button>
+      <input ref="input" :disabled="store.solved" v-model="store.guess" class="bg-gray-200 rounded m-2 mb-4 p-2 text-gray-700" maxlength="5">
+      <button :disabled="store.solved" class="border-2 px-2 py-1 rounded border-gray-800">Guess</button>
     </form>
 
     <!-- output -->
@@ -70,8 +75,8 @@
     </div>
     
     <!-- input -->
-    <div >
-      <Keyboard @input="onKeyboardClick" class="fixed m-auto left-0 right-0 bottom-0 md:bottom-2 p-2 bg-slate-100 w-screen"/>
+    <div>
+      <Keyboard @input="onKeyboardClick" :disabled="store.solved" class="fixed m-auto left-0 right-0 bottom-0 md:bottom-2 p-2 bg-slate-100 w-screen"/>
     </div>
   </div>
 </template>

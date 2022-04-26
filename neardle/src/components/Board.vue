@@ -26,7 +26,7 @@
     <Row :v-if="props.board.length > 0" v-for="(item, index) in props.board" :key="index" :letters="item" />
 
     <!-- dummy board to fill -->
-    <ul><Letter v-for="(item, index) in dummyLetterArray" :key="index" :dummy="true" :letter="item"/></ul>
+    <ul v-if="board.length < 6"><Letter v-for="(item, index) in dummyLetterArray" :key="index" :dummy="true" :letter="item"/></ul>
     
   </div>
 </template>

@@ -5,7 +5,7 @@ import { PlusIcon } from '@heroicons/vue/outline'
 
   // components
   const props = defineProps({
-
+    disabled: Boolean
   })
 
   //
@@ -17,7 +17,7 @@ import { PlusIcon } from '@heroicons/vue/outline'
   <div class="max-w-xl">
     <div v-for="(item, index) in inputs" :key="index">
       <div class="inline-block box-border w-[10%] px-1 cursor-pointer" v-for="(sub, subindex) in item.split('')" :key="subindex">
-        <div @click="$emit('input', sub)" class="text-slate-500 font-bold">
+        <button @click="$emit('input', sub)" class="text-slate-500 font-bold" :disabled="props.disabled">
           <div v-if="sub == '<'">
           <BackspaceIcon class="h-6 w-6 translate-x-4 translate-y-[6px]"/>
           </div>
@@ -27,7 +27,7 @@ import { PlusIcon } from '@heroicons/vue/outline'
           <div class="mx-2 py-4" v-else>
             {{ sub }}
           </div>
-        </div>
+        </button>
       </div>
     </div>
   </div>

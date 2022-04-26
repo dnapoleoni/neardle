@@ -9,7 +9,9 @@ export const useGameStore = defineStore({
       board: [],
       new: true,
       fetched: null,
-      mode: String
+      mode: String,
+      solved: Boolean,
+      score: 0
     }
   },
   actions: {
