@@ -2,6 +2,8 @@
   import { computed } from 'vue'
   import { gsap } from 'gsap'
   import { useGameStore } from '../stores/game-store'
+
+  // components
   import Letter from '../components/Letter.vue'
   
   const store = useGameStore();
@@ -9,17 +11,18 @@
     letters: String
   })
 
+  // letter to v-for array
   const letterArray = computed(() => props.letters.split(""));
 
+  // calculate values
   const getDistance = (index) => {
     const dis = store.distance(props.letters);
     return store.mode == "total" ? dis : dis[index];
   }
 
+  // animation
   const onEnter = (el, done) => {
-    console.log("GSAP", el)
     gsap.from(el, {
-      opacity: 0,
       scaleY: 0,
       delay: el.dataset.index * 0.15,
       onComplete: done

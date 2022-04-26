@@ -1,23 +1,27 @@
 <script setup>
-    // components
   import { computed } from 'vue'
+  
+  // components
   import Row from '../components/Row.vue'
   import Letter from '../components/Letter.vue'
+  
   const props = defineProps({
     board:Array,
     guess:String
   })
 
+  // fill empty slots for dummy letters
   const dummyLetterArray = computed(() => {
-    var blank = new Array(5).fill(".");
+    var blank = new Array(5).fill("|");
     var join = props.guess.split("").concat(blank);
     var end = join.slice(0,5);
     return end;
   });
+
 </script>
 
 <template>
-  <div class="">
+  <div >
     <!-- actual board -->
     <Row :v-if="props.board.length > 0" v-for="(item, index) in props.board" :key="index" :letters="item" />
 

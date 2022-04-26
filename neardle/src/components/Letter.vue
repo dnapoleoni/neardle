@@ -6,43 +6,44 @@ import { computed } from 'vue'
     dummy: Boolean
   })
 
-  const colours = {
-    start: {
-      h: 0, s: 50, l: 50
-    },
-    end: {
-      h: 115, s: 29, l: 53
-    }
+  const colourRange = {
+    start: { h: 370, s: 75, l: 50 }, // red
+    end: { h: 470, s: 59, l: 50 } // green
   }
 
-  // calculate distances
+  // s: +50 for colourblind mode
+
+  // calculate style from distance, or dummy
   const dynamicStyle = computed(() => {
     if (props.dummy) {
-      return props.letter == "." ? "color:white;" : "";
+      return props.letter == "|" ? "color:white;" : "";
     } else {
-      let range = colours.end.h - colours.start.h;
+      let range = colourRange.end.h - colourRange.start.h;
       let percent = 1-(props.distance / 25);
-      return hsl_col_perc(percent, colours.start, colours.end);
+      return hsl_col_perc(percent, colourRange.start, colourRange.end);
     }
   })
 
-  // save repetition
-  const hsl_var = (percent, start, end) => {
-      return ((end - start) * percent) + start;
-  }
-
-  // build style string
+  // build style string by property
   const hsl_col_perc = (percent, start, end) => {
+
+    // same calc for each value
     let h = hsl_var(percent, start.h, end.h);
     let s = hsl_var(percent, start.s, end.s);
     let l = hsl_var(percent, start.l, end.l);
 
     // calculate colour & opacity
-    let str = 'background-color:hsla('+h+','+s+'%,'+l+'%,'+(percent+0.25)+');';
+    let col = 'hsla('+h+','+s+'%,'+l+'%,1)';
+    let str = 'background-color:' + col + ';border: 4px solid '
 
     // add border if correct
-    if (percent == 1) str += "border: 3px solid #333333;" 
+    str += (percent == 1) ? "black;" : "hsla(0,0%,0%,0);";
     return str
+  }
+
+  // save some repetition time
+  const hsl_var = (percent, start, end) => {
+      return ((end - start) * percent) + start;
   }
   
 </script>
@@ -51,11 +52,11 @@ import { computed } from 'vue'
   <li class="inline-block">
     <!-- real letter -->
     <div v-if="!props.dummy">
-      <div class="w-12 py-2 text-xl m-1 rounded-md box-border" :style="`${dynamicStyle}`">{{ letter }}</div>
+      <div class="w-12 py-2 text-xl m-1 rounded-md box-border border-4 border-white;" :style="`${dynamicStyle}`">{{ letter }}</div>
     </div>
-    <!-- placeholders -->
+    <!-- placeholder -->
     <div v-else>
-      <div class="inline-block w-12 py-2 text-xl m-1 rounded-md box-border border-[3px] border-gray" :style="`${dynamicStyle}`">{{letter}}</div>
+      <div class="inline-block w-12 py-2 text-xl m-1 rounded-md box-border border-[4px] border-slate-100" :style="`${dynamicStyle}`">{{letter}}</div>
     </div>
   </li>
 </template>
