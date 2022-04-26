@@ -30,10 +30,10 @@
     <!-- <button class="px-2 absolute right-0 top-0" @click.prevent="logic.toggleMode()">{{ store.mode }}</button> -->
 
     <!-- temp input -->
-    <form @submit.prevent="logic.submitGuess(store.guess)">
+    <!-- <form @submit.prevent="logic.submitGuess(store.guess)">
       <input v-model="store.guess" class="bg-gray-200 rounded m-4 p-2 text-gray-700" maxlength="5">
       <button class="border-2 px-2 py-1 rounded border-gray-800">Guess</button>
-    </form> 
+    </form>  -->
 
     <!-- top menu -->
     <div class="px-10 py-4 text-2xl font-fancy font-bold">
