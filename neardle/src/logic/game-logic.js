@@ -8,6 +8,9 @@ export class GameLogic {
   #maxLetters = 5;
   // #START_DATE = "24 Apr " + Math.round(Math.random() * 2100); // random word
   #START_DATE = "25 Apr 2022 00:00";
+  #DELIMITER = ",";
+  #VALIDS = "list-all-comma.txt";
+  #ANSWERS = "list-answers-alphabetical-comma.txt";
 
   store = useGameStore();
 
@@ -97,7 +100,7 @@ export class GameLogic {
   async fetchWordList() {
 
     // get answer list
-    await fetch('/list-alphabetical.txt').then(response => {
+    await fetch('/' + this.#ANSWERS).then(response => {
         return response.text();
     }).then(answers => {
         
@@ -133,12 +136,12 @@ export class GameLogic {
     }).then(async () => {
 
       // fetch all words to check against for validity
-      await fetch('/list-all.txt').then(response => {
+      await fetch('/' + this.#VALIDS).then(response => {
         return response.text();
       }).then(words => {
           
         // format all words
-        this.#validWords = words.split("\r\n");
+        this.#validWords = words.split(this.#DELIMITER);
       }).catch(err => {
         // ERROR
         throw new Error("Couldn't load valid word list");
