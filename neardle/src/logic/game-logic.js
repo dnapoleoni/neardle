@@ -96,6 +96,11 @@ export class GameLogic {
     }
   }
 
+  // split answers text file by supplied/default delimeter
+  wordlistToArray(str, delimeter) {
+    return str.split(delimeter || this.#DELIMITER);
+  }
+
   // initial data fetch
   async fetchWordList() {
 
@@ -105,7 +110,7 @@ export class GameLogic {
     }).then(answers => {
         
       // temp answer list
-      const list = answers.split("\n");
+      const list = this.wordlistToArray(answers);
 
       // calculate date, return corresponding answer
       const timeDiff = new Date().getTime() - new Date(this.#START_DATE).getTime();
@@ -141,7 +146,7 @@ export class GameLogic {
       }).then(words => {
           
         // format all words
-        this.#validWords = words.split(this.#DELIMITER);
+        this.#validWords = this.wordlistToArray(words);
       }).catch(err => {
         // ERROR
         throw new Error("Couldn't load valid word list");
